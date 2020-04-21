@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Script>
+    <![CDATA[
+        import com.FlexBlog.events.AddPostEvent;
+        import com.FlexBlog.valueobjects.CategoryVO;
+        import com.FlexBlog.valueobjects.PostVO;
+        import mx.controls.Alert;
+        import mx.events.ValidationResultEvent;
+        import com.FlexBlog.models.FlexBlogModel;
+        [Bindable]
+        private var model:FlexBlogModel = FlexBlogModel.getInstance();
+        private function submitPost(event:MouseEvent):void{
+            var errorMesssage:Boolean =false;
+            if (this.titleValidator.validate().type == ValidationResultEvent.INVALID){
+                errorMesssage= true;
+            }
+            if (this.bodyValidator.validate().type == ValidationResultEvent.INVALID){
+                errorMesssage= true;
+            }
+            if(errorMesssage){
+                Alert.show('Please correct the highlighted fields. Mouse over each field for an error description.');
+            }else{
+                this.submitPostButton.enabled = false;
+                var post:PostVO = new PostVO();
+                post.authorId =this.model.currentUser.userId;
+                post.categoryId = CategoryVO(this.categoryComboBox.selectedItem).categoryId;
+                post.title =this.postTitle.text;
+                post.body =this.postBody.text;
+                new AddPostEvent(post).dispatch();
+            }
+        }
+        public function set postSubmitted(status:String):void{
+            if (status == 'success'){
+               this.postBody.text='';
+               this.postTitle.text =''
+            }
+            if (status != ''){
+                this.submitPostButton.enabled = true;
+            }
+        }
+    ]]>
+</mx:Script>
+<mx:Validator id="titleValidator" required="true" triggerEvent="focusOut" source="{this.postTitle}" property="text" requiredFieldError="Title is required."/>
+<mx:Validator id="bodyValidator" required="true" triggerEvent="focusOut" source="{this.postBody}" property="text" requiredFieldError="Please enter some text for the post."/>
+<mx:FormItem label="Category" width="100%">
+<mx:ComboBox id="categoryComboBox" dataProvider="{this.model.categories}" labelField="name"/>
+</mx:FormItem>
+<mx:FormItem label="Title" width="100%">
+<mx:TextInput id="postTitle" width="100%"/>
+</mx:FormItem>
+<mx:FormItem label="Body" width="100%">
+    <mx:TextArea id="postBody" width="100%" height="250"/>
+</mx:FormItem>
+<mx:FormItem width="100%">
+    <mx:Button id="submitPostButton" label="Submit" click="submitPost(event)"/>
+</mx:FormItem>
+</mx:Form>

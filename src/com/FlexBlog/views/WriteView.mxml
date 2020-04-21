@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:views="com.FlexBlog.views.*">
+<mx:Script>
+    <![CDATA[
+        import com.FlexBlog.models.FlexBlogModel;
+        [Bindable]
+        private var model:FlexBlogModel = FlexBlogModel.getInstance();
+    ]]>
+</mx:Script>
+  <mx:Label styleName="viewHeader" text="Write"/>
+  <views:PostEditor width="100%" postSubmitted="{this.model.postSubmissionStatus}"/>
+</mx:VBox>

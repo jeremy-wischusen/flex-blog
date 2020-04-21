@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Script>
+    <![CDATA[
+    import com.FlexBlog.events.KeyWordSearchEvent;
+    ]]>
+</mx:Script>
+        <mx:TextInput id="searchTerms"/>
+        <mx:Button id="searchButton" label="Search" click="new KeyWordSearchEvent(this.searchTerms.text).dispatch();"/>
+</mx:HBox>

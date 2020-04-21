@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Script>
+    <![CDATA[
+        import com.FlexBlog.events.LogoutEvent;
+        import com.FlexBlog.events.LoginEvent;
+        import com.FlexBlog.valueobjects.UserVO;
+        import com.FlexBlog.models.FlexBlogModel;
+        [Bindable]
+        private var model:FlexBlogModel =FlexBlogModel.getInstance();
+        private function doLogin(event:MouseEvent):void{
+            var user:UserVO = new UserVO();
+            user.userName = this.userName.text;
+            user.password = this.password.text;
+            new LoginEvent(user).dispatch();
+        }
+        public function set loggedin(obj:Object):void{
+            if (obj){
+                this.userName.text ='';
+                this.password.text = '';
+            }
+        }
+    ]]>
+</mx:Script>
+<mx:HBox visible="{this.model.currentUser == null}">
+  <mx:Label text="User Name:"/>
+  <mx:TextInput id="userName"/>
+  <mx:Label text="Password:"/>
+  <mx:TextInput id="password" displayAsPassword="true"/>
+  <mx:Button id="loginButton" label="Login" click="doLogin(event);"/>
+</mx:HBox>
+<mx:HBox visible="{this.model.currentUser != null}">
+    <mx:Text text="Welcome {this.model.currentUser.firstName}"/>
+    <mx:Button id="logoutButton" label="Logout" click="new LogoutEvent().dispatch();"/>
+</mx:HBox>
+</mx:HBox>

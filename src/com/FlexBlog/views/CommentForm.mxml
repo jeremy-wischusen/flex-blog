@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" visible="{this.model.currentUser != null}">
+<mx:Script>
+    <![CDATA[
+        import com.FlexBlog.events.AddCommentEvent;
+        import com.FlexBlog.models.FlexBlogModel;
+        import com.FlexBlog.valueobjects.CommentVO;
+        import mx.controls.Alert;
+        import mx.events.ValidationResultEvent;
+
+        private var model:FlexBlogModel =FlexBlogModel.getInstance()
+        private function submitComment(event:MouseEvent):void{
+            if (this.bodyValidator.validate().type == ValidationResultEvent.INVALID){
+                Alert.show('Please correct the highlighted fields. Mouse over each field for an error description.');
+            }else{
+                this.submitCommentButton.enabled = false;
+                var comment:CommentVO =new CommentVO();
+                comment.userId = this.model.currentUser.userId;
+                comment.body = this.comment.text;
+                comment.postId =this.model.currentPost.postId;
+                new AddCommentEvent(comment).dispatch();
+            }
+
+        }
+        public function set commentSubmitted(status:String):void{
+            if (status == 'success'){
+                this.comment.text='';
+            }
+            if(status != ''){
+                this.submitCommentButton.enabled = true;
+            }
+        }
+    ]]>
+</mx:Script>
+<mx:Style>
+    .labelStyle{
+     font-weight:bold;
+    }
+</mx:Style>
+<mx:Validator id="bodyValidator" required="true" triggerEvent="focusOut" source="{this.comment}" property="text" requiredFieldError="Please enter some text for the comment."/>
+    <mx:FormItem labelStyleName="labelStyle" width="100%" label="Enter Comment:">
+    <mx:TextArea id="comment" width="100%" height="100%"/>
+    </mx:FormItem>
+    <mx:FormItem width="100%">
+        <mx:Button id="submitCommentButton" label="Submit" click="submitComment(event);"/>
+    </mx:FormItem>
+</mx:Form>

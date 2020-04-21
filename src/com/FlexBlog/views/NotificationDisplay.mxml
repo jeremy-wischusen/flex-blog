@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" visible="{this.message.length}">
+<mx:Script>
+    <![CDATA[
+    import com.FlexBlog.valueobjects.UserNotificationVO;
+    [Bindable]
+    private var message:String = '';
+    [Bindable]
+    private var messageStyle:String = '';
+    public function set notification(notification:UserNotificationVO):void{
+        this.message = notification.message;
+        if(notification.type == UserNotificationVO.ERROR_MESSAGE){
+            this.messageStyle ='errorStyle';
+        }else{
+            this.messageStyle='';
+        }
+    }
+    private function clearMessage(event:MouseEvent):void{
+        this.message = '';
+        this.messageStyle='';
+    }
+    ]]>
+</mx:Script>
+<mx:Style>
+    .errorStyle{
+        color:#95090f;
+    }
+</mx:Style>
+    <mx:Button id="clearButton" label="Clear" click="clearMessage(event);"/>
+    <mx:Text fontWeight="bold" fontSize="14" text="{this.message}" styleName="{this.messageStyle}" width="100%"/>
+</mx:HBox>

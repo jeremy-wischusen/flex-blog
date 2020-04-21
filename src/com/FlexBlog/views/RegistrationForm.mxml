@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" >
+<mx:Script>
+    <![CDATA[
+        import com.FlexBlog.events.ChangeMainViewEvent;
+        import mx.events.ValidationResultEvent;
+        import com.FlexBlog.events.RegisterUserEvent;
+        import com.FlexBlog.valueobjects.UserVO;
+        import mx.controls.Alert;
+            private function doRegistration(evt:MouseEvent):void{
+            var errorMesssage:Boolean =false;
+            if (this.firstNameValidator.validate().type == ValidationResultEvent.INVALID){
+                errorMesssage= true;
+            }
+            if (this.lastNameValidator.validate().type == ValidationResultEvent.INVALID){
+                errorMesssage= true;
+            }
+            if (this.userNameValidator.validate().type == ValidationResultEvent.INVALID){
+                errorMesssage= true;
+            }
+            if (this.passwordValidator.validate().type == ValidationResultEvent.INVALID){
+                errorMesssage= true;
+            }
+                if (errorMesssage){
+                    Alert.show('Please correct the highlighted fields. Mouse over each field for an error description.');
+                }else{
+                    this.registerButton.enabled = false;
+                    this.cancelButton.enabled = false;
+                    var user:UserVO = new UserVO();
+                    user.firstName = this.firstName.text;
+                    user.lastName = this.lastName.text;
+                    user.userName = this.userName.text;
+                    user.password = this.password.text;
+                    new RegisterUserEvent(user).dispatch();
+                }
+        }
+        public function set registrationComplete(status:String):void{
+            if(status == 'success'){
+                this.clearForm();
+
+            }
+            if(status!=''){
+            this.registerButton.enabled = true;
+            this.cancelButton.enabled = true;
+            }
+        }
+        private function clearForm():void{
+              this.firstName.text = '';
+              this.lastName.text = '';
+              this.userName.text= '';
+              this.password.text = '';
+        }
+
+    ]]>
+</mx:Script>
+<mx:Validator id="firstNameValidator" required="true" triggerEvent="focusOut" source="{this.firstName}" property="text" requiredFieldError="First name is required."/>
+<mx:Validator id="lastNameValidator" required="true" triggerEvent="focusOut" source="{this.lastName}" property="text" requiredFieldError="Last name is required."/>
+<mx:StringValidator id="userNameValidator" required="true" triggerEvent="focusOut" source="{this.userName}" minLength="5" tooShortError="User names must be at least 5 characters." property="text"/>
+<mx:StringValidator id="passwordValidator" required="true" triggerEvent="focusOut" source="{this.password}" minLength="5" tooShortError="Passwords must be at least 5 characters." property="text"/>
+    <mx:Form x="0" y="0">
+        <mx:FormHeading label="Register" textAlign="left"/>
+        <mx:FormItem label="First Name:" required="true">
+            <mx:TextInput id="firstName"/>
+        </mx:FormItem>
+        <mx:FormItem label="Last Name:" required="true">
+            <mx:TextInput id="lastName"/>
+        </mx:FormItem>
+        <mx:FormItem label="User Name:" required="true">
+            <mx:TextInput id="userName"/>
+        </mx:FormItem>
+        <mx:FormItem label="Password:" required="true">
+            <mx:TextInput id="password" displayAsPassword="true"/>
+        </mx:FormItem>
+        <mx:HBox width="100%" horizontalAlign="right">
+            <mx:Button label="Register" id="registerButton" click="doRegistration(event);"/> <mx:Button label="Cancel" id="cancelButton" click="new ChangeMainViewEvent(ChangeMainViewEvent.POSTS_VIEW).dispatch(); this.clearForm();"/>
+        </mx:HBox>
+    </mx:Form>
+</mx:Form>

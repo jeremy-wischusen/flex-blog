@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Script>
+    <![CDATA[
+        import com.FlexBlog.models.FlexBlogModel;
+        [Bindable]
+        private var model:FlexBlogModel = FlexBlogModel.getInstance();
+    ]]>
+</mx:Script>
+<mx:Style>
+    .postTitle{
+     font-weight:bold;
+     font-size:18px;
+    }
+    .byLine{
+     font-style:italic;
+     font-size:16px;
+    }
+    .postBody{
+     font-size:12px;
+    }
+    .postDate{
+        font-style:italic;
+        font-weight:bold;
+    }
+</mx:Style>
+<mx:Text styleName="postTitle" text="{this.model.currentPost.title}"/>
+<mx:Text styleName="byLine" text="By {this.model.currentPost.authorName}"/>
+<mx:Text styleName="postDate" text="Written {this.model.currentPost.createdOn}"/>
+<mx:Text styleName="postBody" text="{this.model.currentPost.body}" width="100%"/>
+</mx:VBox>

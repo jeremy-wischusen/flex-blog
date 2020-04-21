@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:views="com.FlexBlog.views.*">
+<mx:Script>
+    <![CDATA[
+        import com.FlexBlog.models.FlexBlogModel;
+        [Bindable]
+        private var model:FlexBlogModel = FlexBlogModel.getInstance();
+    ]]>
+</mx:Script>
+<mx:Label styleName="viewHeader" text="Posts"/>
+<mx:HBox width="100%">
+    <mx:VBox width="25%">
+      <mx:Label styleName="viewSubheder" text="Recent Posts"/>
+      <views:PostList dataProvider="{this.model.recentPosts}" width="100%"/>
+      <views:SearchBoxView width="100%"/>
+      <views:CategorySearchView width="100%"/>
+    </mx:VBox>
+    <mx:VBox width="100%">
+      <views:SearchResultsView width="100%"/>
+      <views:PostDisplay width="100%"/>
+      <views:CommentView width="100%"/>
+    </mx:VBox>
+</mx:HBox>
+</mx:VBox>

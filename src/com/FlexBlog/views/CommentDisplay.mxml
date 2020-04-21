@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Style>
+    .commentByline{
+     font-style:italic;
+     font-size:14px;
+    }
+</mx:Style>
+    <mx:Label text="{data.postedBy} - {data.madeOn}" styleName="commentByline"/>
+    <mx:Text text="{data.body}" width="100%" height="100"/>
+</mx:VBox>

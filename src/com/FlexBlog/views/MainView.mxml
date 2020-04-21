@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:views="com.FlexBlog.views.*" creationComplete="init()">
+<mx:Script>
+    <![CDATA[
+        import com.FlexBlog.events.ApplicationInitializeEvent;
+        import com.FlexBlog.models.FlexBlogModel;
+        import com.FlexBlog.events.ChangeMainViewEvent;
+        [Bindable]
+        private var model:FlexBlogModel = FlexBlogModel.getInstance();
+        private function init():void{
+            new ApplicationInitializeEvent().dispatch();
+        }
+    ]]>
+</mx:Script>
+    <mx:Style>
+        .appTitle{
+        font-weight:bold;
+        font-size:24px;
+        }
+        .viewHeader{
+        font-weight:bold;
+        font-size:18px;
+        }
+        .viewSubheder{
+         font-weight:bold;
+         font-size:14px;
+        }
+    </mx:Style>
+    <mx:ApplicationControlBar width="100%" fontSize="18">
+        <mx:Label text="FlexBlog:" styleName="appTitle"/>
+        <mx:LinkButton label="Posts" id="postsButton" click="new ChangeMainViewEvent( ChangeMainViewEvent.POSTS_VIEW).dispatch();"/>
+        <mx:LinkButton label="Register" id="registerButton" click="new ChangeMainViewEvent(ChangeMainViewEvent.REGISTER_VIEW).dispatch();"/>
+        <mx:LinkButton label="Write" id="writeButton" visible="{(this.model.currentUser == null) ? false:(this.model.currentUser.accessLevel == 100)}" click="new ChangeMainViewEvent(ChangeMainViewEvent.WRITE_VIEW).dispatch();"/>
+        <views:Login width="100%" fontSize="12" horizontalAlign="right" loggedin="{this.model.currentUser}"/>
+    </mx:ApplicationControlBar>
+    <views:NotificationDisplay notification="{this.model.userNotification}" width="100%"/>
+    <mx:ViewStack id="mainViewStack" width="100%" height="100%" selectedIndex="{this.model.mainView}">
+        <views:PostsView id="postView" width="100%"/>
+        <views:WriteView id="writeView" width="100%"/>
+        <views:RegisterView id="registerView" width="100%"/>
+    </mx:ViewStack>
+</mx:VBox>

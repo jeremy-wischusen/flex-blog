@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:List xmlns:mx="http://www.adobe.com/2006/mxml" itemClick="onPostSelected(event);" labelField="title" backgroundAlpha="0">
+    <mx:Script>
+        <![CDATA[
+            import mx.events.ListEvent;
+            import com.FlexBlog.valueobjects.PostVO;
+            import com.FlexBlog.events.SetCurrentPostEvent;
+            private function onPostSelected(event:ListEvent):void{
+                new SetCurrentPostEvent(PostVO(this.selectedItem)).dispatch();
+            }
+        ]]>
+    </mx:Script>
+</mx:List>

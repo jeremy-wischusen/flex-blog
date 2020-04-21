@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Script>
+    <![CDATA[
+        import com.FlexBlog.valueobjects.CategoryVO;
+        import com.FlexBlog.events.CategorySearchEvent;
+        import com.FlexBlog.models.FlexBlogModel;
+        [Bindable]
+        private var model:FlexBlogModel = FlexBlogModel.getInstance();
+    ]]>
+</mx:Script>
+    <mx:Label text="Categories" fontWeight="bold" fontSize="14"/>
+    <mx:List
+        width="100%"
+        backgroundAlpha="0"
+        id="categoryList"
+        dataProvider="{this.model.categories}"
+        labelField="name"
+        itemClick="new CategorySearchEvent(CategoryVO(this.categoryList.selectedItem)).dispatch()"/>
+</mx:VBox>

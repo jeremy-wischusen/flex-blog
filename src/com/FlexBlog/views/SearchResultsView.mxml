@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:views="com.FlexBlog.views.*"
+    visible="{this.model.searchResults.length >0}"
+    includeInLayout="{this.model.searchResults.length >0}">
+  <mx:Script>
+    <![CDATA[
+        import com.FlexBlog.models.FlexBlogModel;
+        import com.FlexBlog.events.ClearSearchResultsEvent;
+        [Bindable]
+        private var model:FlexBlogModel = FlexBlogModel.getInstance();
+    ]]>
+  </mx:Script>
+  <mx:HBox horizontalAlign="right" width="100%">
+    <mx:Label text="{this.model.searchTitle}" fontWeight="bold" fontSize="14" width="100%"/>
+    <mx:Button id="clearResultsButton" label="Clear" click="new ClearSearchResultsEvent().dispatch()"/>
+  </mx:HBox>
+  <views:PostList dataProvider="{this.model.searchResults}" width="100%"/>
+</mx:VBox>
